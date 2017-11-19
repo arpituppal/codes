@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -35,21 +34,43 @@ typedef long long LL;
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
 
-char s[1000];
+
 int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+
+	int m, i, flag = 0;
+	int arr[1100];
+	
+	scanf("%d", &m);
+	
+	for( i = 0; i < m; i++) {
+		scanf("%d", &arr[i]);
+	}
+	
+	for( i = 1; i < m; i++) {
+	
+		if(arr[i] % arr[0] !=0) {
+			flag = 1;
+			break;
+		}
+		
+	}
+	
+	
+	if(flag == 1) {
+		printf("-1\n");
+	} else {
+	
+		
+		printf("%d\n", m);
+		
+		for(i = 0; i< m; i++) {
+		
+			printf("%d ",arr[i]);
+		}
+		printf("\n");
+	}
+	
+
+	return 0;
+	
 }

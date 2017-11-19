@@ -35,21 +35,43 @@ typedef long long LL;
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
 
-char s[1000];
+#define N 2005
+
+using namespace std;
+
+LL lcs[N][N];
+char s[N], s1[N];
+int cost[26];
+
 int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+	
+	int n, m, i, j;
+	
+	scanf("%d %d", &n, &m);
+	
+	for(i = 0; i < 26; i++) {
+		scanf("%d", &cost[i]);
+	}
+	
+	scanf("%s", s);
+	scanf("%s", s1);
+	
+	for( i = 0 ; i <= n; i++) {
+		
+		for(j = 0; j <= m; j++) {
+			
+			if(i == 0 || j == 0) {
+				lcs[i][j] = 0;
+				
+			} else if(s[i-1] == s1[j-1]) {
+				lcs[i][j] = lcs[i-1][j-1] + cost[s[i-1] -'a'];
+				
+			} else{
+				lcs[i][j] = MAX(lcs[i-1][j], lcs[i][j-1]);
+			}
+		}
+	}
+	
+	printf("%lld\n", lcs[n][m]);
+	return 0;
 }

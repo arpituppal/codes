@@ -34,22 +34,47 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
+#define LIM 20
 
-char s[1000];
+LL binsearch(LL low, LL high, LL val, LL a, LL b) {
+	LL ans;
+	LL mid;
+	while(low<=high) {
+		mid = (low + high) >> 1;
+	
+		LL adiv = mid/a;
+		LL bdiv = mid/b;
+	
+		LL hcf = __gcd(a, b);
+		LL lcm = (a * b) /hcf;
+		LL abdiv = mid/lcm;
+	
+		LL numdiv = adiv + bdiv - abdiv;
+	
+		//printf("mid %lld adiv %lld bdiv %lld lcm %lld num %lld val %lld\n", mid, adiv, bdiv, lcm, numdiv, val);
+	
+		if(numdiv >= val) {
+			ans = mid;
+			high = mid -1;
+		}
+		 else {
+			low = mid + 1;
+		}
+	}
+	return ans;
+}
+
 int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+
+	int t;
+	scanf("%d", &t);
+	while(t--) {
+		
+		LL a, b, n;
+		scanf("%lld %lld %lld" , &a, &b, &n);
+		
+		printf("%lld\n", binsearch(0, (a*b)*n, n , a, b));
+	}
+	
+	return 0;
 }

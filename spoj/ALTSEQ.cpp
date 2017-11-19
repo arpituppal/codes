@@ -34,22 +34,40 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
+#define mod 1000000007
 
-char s[1000];
+long long int arr[5001];
+int dp[5001];
+
 int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+	
+	int n, i, j, mx = -1;
+	
+	scanf("%d", &n);
+	
+	for(i = 0 ; i < n ; i++) {
+		scanf("%lld", &arr[i]);
+	}
+	
+	int curr;
+	
+	for( i = 0 ; i < n; i++) {
+	
+		for(j = 0; j<i; j++) {
+			
+			if((arr[i] > 0 && arr[j] <0 || arr[i]<0 && arr[j]>0) && ABS(arr[i]) > ABS(arr[j])) {
+				dp[i] = MAX(dp[i], dp[j] + 1);
+			}
+		}
+		
+		if(dp[i] == 0) {
+			dp[i]=1;
+		}
+	}
+	
+	for(i = 0 ; i <n; i++) {
+		mx = MAX(dp[i], mx);
+	}
+	printf("%d\n", mx);
+	return 0;
 }

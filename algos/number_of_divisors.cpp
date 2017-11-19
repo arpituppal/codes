@@ -34,22 +34,52 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
+#define LIM 20000001
 
-char s[1000];
-int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+int numdiv[LIM], prime[LIM];
+
+void sieve() {
+
+	int i, j;
+	
+	numdiv[1] = 1;
+
+	//store largest prime divisor for each number
+	for(i = 2; i * i < LIM; i++) {
+		
+		if(prime[i] == 0) {
+			prime[i] = i;
+			for(j = 2*i; j < LIM; j += i) {
+				prime[j] = i;
+			}
+		}
+	}
+	
+	for(; i < LIM; i++ ){
+		if(prime[i] == 0) {
+			prime[i] = i;
+		}
+	}
+	
+	numdiv[0] = 0;
+	numdiv[1] = 1;
+
+	//prime divisor method to calculate number of divisors(including 1 and itself) for a number
+	for(i = 2; i <LIM; i++) {
+		
+		int cnt = 0;
+		j = i;
+		while(j % prime[i] == 0) {
+			cnt++;
+			j /= prime[i];
+		}
+		numdiv[i] = numdiv[j] * (cnt + 1);
+	}
 }
+
+int main() {
+
+	sieve();
+	return 0;
+}
+

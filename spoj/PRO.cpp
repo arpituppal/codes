@@ -35,21 +35,38 @@ typedef long long LL;
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
 
-char s[1000];
+int freq[1000010];
+set<int> st;
+
 int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+	
+	int m, i, k, val;
+	long long int ans = 0;
+	
+	scanf("%d", &m);
+	while(m--) {
+		
+		scanf("%d ", &k);
+		while(k--) {
+			scanf("%d", &val);
+			freq[val]++;
+			st.insert(val);
+		}
+		
+		ans += (*--st.end()) - (*st.begin());
+
+		freq[*st.begin()] --;
+		freq[*--st.end()]--;
+		
+		if(freq[*st.begin()] == 0)
+			st.erase(st.begin());
+			
+		if(freq[*--st.end()] == 0)
+			st.erase(--st.end());
+	}
+	
+	printf("%lld\n", ans);
+	
+	
+	return 0;
 }

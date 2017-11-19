@@ -35,21 +35,33 @@ typedef long long LL;
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
 
-char s[1000];
 int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+
+	char s[150];
+	
+	scanf("%s", s);
+	int l = strlen(s);
+	int ans = 0;
+	int i, j, k, flag = 0;
+	for( i = 0 ; i < l ;i++) {
+	
+		if(s[i] == 'Q') {
+		
+			for(j = i +1; j< l; j++) {
+			
+				if(s[j] == 'A') {
+				
+					for(k = j + 1; k < l; k++) {
+						if(s[k] == 'Q') 
+							ans++;
+					}
+				}
+			}
+		}
+		
+	}
+	
+	printf("%d\n", ans);
+	
+	return 0;
 }

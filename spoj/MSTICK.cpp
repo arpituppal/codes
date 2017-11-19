@@ -35,21 +35,32 @@ typedef long long LL;
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
 
-char s[1000];
 int main() {
-    int t;
-    scanf("%d", &t);
-    while(t--) {
-   		 scanf("%s", s);
-    		int l = strlen(s);
-    
-   		 if(l <= 10) {
-    		    printf("%s\n", s);
-    		} else {
-    	    
-    		    printf("%c%d%c\n", s[0], l-2, s[l-1]);
-    		}
-    }
-    
-    return 0;
+
+	int t;
+	scanf("%d", &t);
+	while(t--) {
+
+		vector<pair<int, int>> vec;
+		int n, l, w, i, ans = 1;
+		scanf("%d", &n);
+		
+		for(i = 0; i < n; i++){
+			scanf("%d %d", &l, &w);
+			vec.PB(MP(l, w));
+		}
+
+		sort(vec.begin(), vec.end());
+
+		for(i = 1; i < vec.size(); i++) {
+
+			if(vec[i].first < vec[i - 1].first || vec[i].second < vec[i - 1].second) {
+				ans++;
+			}
+		}
+
+		printf("%d\n", ans);
+	}
+	
+	return 0;
 }
