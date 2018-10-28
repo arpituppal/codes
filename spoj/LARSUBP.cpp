@@ -34,60 +34,43 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-
-
-vector<int> vec[10010];
-queue<int> q;
-int visited[10010];
-
-int bfs(int st) {
-
-	int ans = 1;
+#define MOD 1000000007
+inline void inp( int &n )
+{
+n=0; int ch=getcx();int sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+} 
+unsigned long long int hash[10];
+char s[10010];
+int main()
+{
+	int t,x;
+	inp(t);
+	for(x=1;x<=t;x++)
+	{
+		int i,l,j;
+		unsigned long long int ans=0;
+		scanf("%s",s);
+		l=strlen(s);
+		hash[s[0]-48]=1;
 		
-	q.push(st);
-	visited[st] = 1;
-	
-	while(!q.empty()) {
-	
-		int node = q.front();
-		q.pop();
-		
-		for(int i = 0; i < vec[node].size(); i++) {
-			
-			if(!visited[vec[node][i]]) {
-				ans++;
-				q.push(vec[node][i]);
-				visited[vec[node][i]] = 1;
-			}
-		}	
-	}
-	
-	return ans;
-}
-
-
-int main() {
-	
-	int n, m, i, a, b, ans = 0;
-	scanf("%d %d", &n, &m);
-	
-	while(m--) {
-		
-		scanf("%d %d", &a, &b);
-		vec[a].PB(b);
-	}
-	
-	for(i = 1; i <= n; i++) {
-	
-		int a = bfs(i);
-		ans = MAX(ans, a);
-		
-		for(int j = 1; j <=n; j++) {
-			visited[j] = 0;
+		for(i=1;i<l;i++)
+		{
+			ans=0;
+			for(j=0;j<(s[i]-48);j++)
+			ans=(ans%MOD+hash[j]%MOD)%MOD;
+			hash[s[i]-48]=((hash[s[i]-48]%MOD+ans%MOD)%MOD+1)%MOD;
+			//arr[i]=ans+1;
 		}
-		
+		ans=0;
+		for(i=0;i<10;i++)
+		ans=(ans%MOD+hash[i]%MOD)%MOD;
+		printf("Case %d: %llu\n",x,ans);
+		for(i=0;i<10;i++)
+		hash[i]=0;
 	}
-	
-	printf("%d\n", ans);
 	return 0;
 }

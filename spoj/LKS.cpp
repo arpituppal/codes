@@ -34,60 +34,37 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-
-
-vector<int> vec[10010];
-queue<int> q;
-int visited[10010];
-
-int bfs(int st) {
-
-	int ans = 1;
-		
-	q.push(st);
-	visited[st] = 1;
-	
-	while(!q.empty()) {
-	
-		int node = q.front();
-		q.pop();
-		
-		for(int i = 0; i < vec[node].size(); i++) {
-			
-			if(!visited[vec[node][i]]) {
-				ans++;
-				q.push(vec[node][i]);
-				visited[vec[node][i]] = 1;
-			}
-		}	
+inline void inp( int &n )
+{
+n=0; int ch=getcx();int sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+} 
+int ans[2][2000002],wt[510],val[510];
+int main()
+{
+	int k,n,i,j;
+	inp(k);
+	inp(n);
+	for(i=1;i<=n;i++)
+	{
+		inp(val[i]);
+		inp(wt[i]);
 	}
-	
-	return ans;
-}
-
-
-int main() {
-	
-	int n, m, i, a, b, ans = 0;
-	scanf("%d %d", &n, &m);
-	
-	while(m--) {
-		
-		scanf("%d %d", &a, &b);
-		vec[a].PB(b);
-	}
-	
-	for(i = 1; i <= n; i++) {
-	
-		int a = bfs(i);
-		ans = MAX(ans, a);
-		
-		for(int j = 1; j <=n; j++) {
-			visited[j] = 0;
+	ans[0][0]=0;
+	ans[1][0]=0;
+	for(i=1;i<=n;i++)
+	{
+		for(j=1;j<=k;j++)
+		{
+			if(wt[i]>j)
+			ans[(i&1)][j]=ans[!(i&1)][j];
+			else
+			ans[(i&1)][j]=MAX(ans[!(i&1)][j],(ans[!(i&1)][j-wt[i]]+val[i]));
 		}
-		
 	}
-	
-	printf("%d\n", ans);
+	printf("%d\n",ans[(n&1)][k]);
 	return 0;
 }
