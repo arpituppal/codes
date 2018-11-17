@@ -1,0 +1,73 @@
+#include<stdio.h>
+#include<string.h>
+int main()
+{
+    char a[40],q[40];
+    while(1)
+    {
+        int l,k=0,t,c=1,i;
+        scanf("%s",a);
+        l=strlen(a);
+        if(l==2 && a[0]=='-' && a[1]=='1')
+        break;
+        if(l==1)
+        {
+            if((a[0]-48)==0)
+                printf("0\n\n");
+            else
+                printf("1\n\n");
+        }
+        else
+        {
+            if((a[0]-48)==9)
+            {
+                q[0]=(((a[0]-48)/9)+48);
+                a[0]=(((a[0]-48)%9)+48);
+                k=1;
+            }
+            for(i=0;i<l-1;i++)
+            {
+                t=(((a[i]-48)*10)+(a[i+1]-48));
+                q[k++]=((t/9)+48);
+                a[i+1]=((t%9)+48);
+
+            }
+            if((a[l-1]-48)==0)
+            {
+                for(i=0;i<k;i++)
+                printf("%d",(q[i]-48));
+                printf("\n\n");
+            }
+            else
+            {
+                i=k-1;
+                while(c==1)
+                {
+                    if((q[i]-48)+c>9)
+                    {
+                        q[i]=((((q[i]-48)+c)%10)+48);
+                        i--;
+                    }
+                    else
+                    {
+                        q[i]=(((q[i]-48)+c)+48);
+                        c=0;
+                    }
+                }
+                if((q[0]-48)==0)
+                {
+                    printf("1");
+                    for(i=0;i<k;i++)
+                        printf("%d",(q[i]-48));
+                     printf("\n\n");
+                }
+                else
+                {
+                    for(i=0;i<k;i++)
+                    printf("%d",(q[i]-48));
+                    printf("\n\n");
+            }}
+        }
+    }
+    return 0;
+}

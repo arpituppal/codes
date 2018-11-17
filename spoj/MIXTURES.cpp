@@ -34,46 +34,56 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
 
-stack<int> stk;
+int dp[110][110],sum[110][110],color[110];
 
-int main() {
-		
-	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
-			}
-		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
-	}
+int solve(int i, int j)
+{
+	int k;
+	//printf("pp %d\n",dp[i][j]);
+	if(dp[i][j]!=-1)
+	return dp[i][j];
 	
+	if(i==j)
 	return 0;
+	
+	dp[i][j]=INF;
+	//printf("dpdpd %d\n",dp[i][j]);
+	for(k=i;k<j;k++)
+	{
+		//printf("yes %d %d \n",sum[i][k],sum[k+1][j]);
+		int val=solve(i,k)+solve(k+1,j)+sum[i][k]*sum[k+1][j];
+		if(val<dp[i][j])
+		dp[i][j]=val;
+	}
+	return dp[i][j];
 }
+
+int main()
+{
+	int n;
+	while(scanf("%d",&n)!=EOF)
+	{
+		//printf("%d\n",n);
+		int i,j;
+		memset(dp,-1,sizeof(dp));
+		//memset(sum,0,sizeof(sum));
+		//scanf("%d",&n);
+		
+		for(i=0;i<n;i++)
+		{
+			scanf("%d",&color[i]);
+			sum[i][i]=color[i];
+		}
+		for(i=0;i<n;i++)
+		{
+			for(j=i+1;j<n;j++)
+			sum[i][j]=(sum[i][j-1]+color[j])%100;
+		}
+		//int ans=0;		
+		//printf("dd %d\n",dp[0][0]);
+		int ans=solve(0,n-1);
+		printf("%d\n",ans);
+	}
+	return 0;
+}				

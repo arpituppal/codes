@@ -34,46 +34,34 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
+#define MOD 1000000007
 
-stack<int> stk;
-
-int main() {
-		
-	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
-			}
-		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
-	}
-	
-	return 0;
+char s[100010];
+int hash[52];
+int main()
+{
+      int t;
+      scanf("%d",&t);
+      while(t--)
+      {
+            int n,i,ans=0,l;
+            scanf("%d",&n);
+            scanf("%s",s);
+            memset(hash,0,sizeof(hash));
+            l=strlen(s);
+            for(i=0;i<l;i++)
+            {
+                  if(s[i]>=97 && s[i]<=122)
+                        hash[s[i]-97]++;
+                  if(s[i]>=65 && s[i]<=90)
+                  {
+                        if(hash[s[i]-65]==0)
+                              ans++;
+                        else
+                              hash[s[i]-65]--;
+                  }
+            }
+            printf("%d\n",ans);
+      }
+      return 0;
 }

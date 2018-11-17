@@ -34,46 +34,63 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
 
-stack<int> stk;
+stack<int>stk;
+int mass(char c)
+{
+	if(c=='H')
+	return 1;
+	if(c=='C')
+	return 12;
+	if(c=='O')
+	return 16;
+} 
+int main()
+{
 
-int main() {
-		
-	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
+	char s[110];
+	scanf("%s",s);
+		int i,l,ans=0,m,sum=0;
+		l=strlen(s);
+		for(i=0;i<l;i++)
+		{
+			if(s[i]=='C' || s[i]=='H' || s[i]=='O')
+				{
+				 stk.push(mass(s[i]));
+				// printf("%d\n",stk.top());
+				 }
+			if(s[i]>=48 && s[i]<=57)
+			{
+				m=stk.top();
 				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
+				stk.push(m*(s[i]-48));
+				//printf("%d\n",stk.top());
+			}
+			if(s[i]=='(')
+			{
+				stk.push(-1);
+				//printf("%d\n",stk.top());
+			}
+			if(s[i]==')')
+			{
+				sum=0;
+				while(!stk.empty() && stk.top()!=-1)
+				{
+					
+					sum+=stk.top();
+					//printf("%d sum=%d\n",stk.top(),sum);
+					stk.pop();
+				}
+				stk.pop();
+				//printf("%d\n",sum);
+				stk.push(sum);
 			}
 		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
+		while(!stk.empty())
+		{
+			ans+=stk.top();
 			stk.pop();
 		}
-		
-		printf("%d\n", ans);
-	}
-	
+		printf("%d\n",ans);
 	return 0;
 }

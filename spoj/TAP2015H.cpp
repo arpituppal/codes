@@ -34,46 +34,48 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
-
-stack<int> stk;
-
-int main() {
-		
-	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
+inline void inp( int &n )
+{
+n=0; int ch=getcx();int sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+} 
+inline void inp1( LL &n )
+{
+n=0; LL ch=getcx();LL sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+}
+int arr[100];
+int main()
+{
+	int n,c=1;
+	while(scanf("%d",&n)!=EOF)
+	{
+		c=1;
+		while(1)
+		{
+			int j,m=n,i=0,r=0;
+			while(m>0)
+			{
+				arr[i++]=m%10;
+				m/=10;
 			}
-		}
+			sort(arr,arr+i);
+			
+			for(j=0;j<i;j++)
+			r=(r*10)+arr[j];
 		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
+			n=n-r;
+			if(n==0)
+			break;
+			c++;
 		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
+		printf("%d\n",c);	
 	}
-	
 	return 0;
 }

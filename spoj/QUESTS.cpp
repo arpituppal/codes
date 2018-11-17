@@ -34,46 +34,54 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
+inline void inp( int &n )
+{
+n=0; int ch=getcx();int sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+}
+inline void inp1( LL &n )
+{
+n=0; LL ch=getcx();LL sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+}
 
-stack<int> stk;
+vector<pair<int,int> >vec;
 
-int main() {
-		
+int main()
+{
 	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
+	inp(t);
+	while(t--)
+	{
+		int n,a,b,i,ans=1,iend=0;
+		inp(n);
+		for(i=0;i<n;i++)
+		{
+			inp(a);
+			inp(b);
+			vec.PB(MP(a,b));
+		}
+		sort(vec.begin(),vec.end());
+		iend=vec[0].second;
+
+		for(i=1;i<n;i++)
+		{
+			if(vec[i].first<=iend) //this interval can be merged
+			iend=MIN(iend,vec[i].second);
+			else
+			{
+				ans++;
+				iend=vec[i].second;
 			}
 		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
+		printf("%d\n",ans);
+		vec.clear();
 	}
-	
 	return 0;
 }

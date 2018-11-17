@@ -34,46 +34,26 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
-
-stack<int> stk;
 
 int main() {
-		
+
 	int t;
 	scanf("%d", &t);
+
 	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
-			}
+
+		LL a, b, k, ans = 0;
+
+		scanf("%lld %lld %lld", &a, &b, &k);
+
+		ans = (k/2)*a - (k/2)*b;
+
+		if(k%2 == 1) {
+			ans += a;
 		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
+
+		printf("%lld\n",ans);
 	}
-	
+
 	return 0;
 }

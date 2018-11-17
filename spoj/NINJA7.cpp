@@ -34,46 +34,58 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
+inline void inp( int &n )
+{
+n=0; int ch=getcx();int sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+} 
+inline void inp1( LL &n )
+{
+n=0; LL ch=getcx();LL sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+}
 
-stack<int> stk;
+int a[100005],b[100005],c[100005];
 
-int main() {
-		
+int main()
+{
 	int t;
-	scanf("%d", &t);
-	while(t--) {
+	inp(t);
+	while(t--)
+	{
+		int n,i,ans=0,k=0;
+		LL sum=0;
 		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
+		inp(n);
+		for(i=0;i<n;i++)
+		inp(a[i]);
+		for(i=0;i<n;i++)
+		inp(b[i]);
 		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
-			}
+		for(i=0;i<n;i++)
+		{
+			LL diff=a[i]-b[i];
+			if(diff>=0)
+			{ans++; sum+=diff;}
+			else
+			c[k++]=diff;
 		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
+		sort(c,c+k);
+		for(i=k-1;i>=0;i--)
+		{
+			if(sum+c[i]>=0)
+			{ans++;sum+=c[i];}
+			else
+			break;
 		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
+		printf("%d\n",ans);
 	}
-	
 	return 0;
 }
+		

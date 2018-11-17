@@ -34,46 +34,65 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
 
-stack<int> stk;
+vector<pair<LL, int> > vec;  //ele - idx
+vector<int> ansidx;
+
+LL cumsum[1000000];
 
 int main() {
-		
-	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
-			}
-		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
+
+	int n, i, ans = 0;
+	LL ele;
+
+	scanf("%d", &n);
+	for(i = 0; i < n ; i++) {
+		scanf("%lld", &ele);
+		vec.PB(MP(ele,i));
+	}
+
+	sort(vec.begin(), vec.end());
+
+	cumsum[0] = vec[0].first;
+
+	for(i = 1 ; i < n; i++) {
+		cumsum[i] = vec[i].first + cumsum[i-1];
 	}
 	
+	//remove last ele
+	int remove = vec[n-1].first;
+	int removeidx = vec[n-1].second;
+
+	int toform = vec[n-2].first;
+
+	if((cumsum[n-2] - toform) == toform)  {
+
+		ans++;
+		ansidx.PB(removeidx+1);
+	}
+
+
+	for(i = n-2; i >=0; i--) {
+
+		remove = vec[i].first;
+		removeidx = vec[i].second;
+
+		toform = vec[n-1].first;
+
+		if((cumsum[n-2] - remove) == toform) {
+			ans++;
+			ansidx.PB(removeidx+1);
+		}
+	}
+
+	printf("%d\n", ans);
+
+	for(i = 0; i < ansidx.size(); i++) {
+
+		printf("%d ", ansidx[i]);
+	}
+
+	printf("\n");
+
 	return 0;
 }

@@ -34,46 +34,33 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
 
-stack<int> stk;
+char s[100][100];
+int dp[100][100];
 
-int main() {
-		
-	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
-			}
-		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
-	}
-	
-	return 0;
+int main()
+{
+      int n,i,j;
+      scanf("%d",&n);
+      for(i=0;i<n;i++)
+            scanf("%s",s[i]);
+
+      dp[0][0]=1;
+      for(i=0;i<n;i++)
+      {
+            for(j=0;j<n;j++)
+            {
+                  if(s[i][j]!='0' && dp[i][j]!=0)
+                  {
+                        int num=s[i][j]-48;
+                        if(num+j<n)
+                              dp[i][num+j]+=dp[i][j];
+                        if(num+i<n)
+                              dp[num+i][j]+=dp[i][j];
+                  }
+            }
+      }
+      printf("%d",dp[n-1][n-1]);
+      return 0;
 }
+

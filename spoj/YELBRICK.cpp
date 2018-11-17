@@ -34,46 +34,47 @@ typedef long long LL;
 #define chkbit(s, b) (s & (1<<b))
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
-#define LIM 100005
-
-stack<int> stk;
-
-int main() {
-		
-	int t;
-	scanf("%d", &t);
-	while(t--) {
-		
-		int n, i, val, top, ans = 0;
-		scanf("%d", &n);
-		int deg[LIM] = {0};
-		
-		scanf("%d", &val);
-		stk.push(val);
-		
-		for(i = 1; i < 2*n; i++) {
-			
-			scanf("%d", &val);
-			
-			if(val == stk.top()) {
-				stk.pop();
-			} else {
-				deg[stk.top()]++;
-				deg[val]++;
-				stk.push(val);
-			}
+inline void inp( LL &n )
+{
+n=0; LL ch=getcx();LL sign=1;
+while( ch < '0' || ch > '9' ){if(ch=='-')sign=-1; ch=getcx();}
+while( ch >= '0' && ch <= '9' )
+n = (n<<3)+(n<<1) + ch-'0', ch=getcx();
+n=n*sign;
+} 
+long long int minval(long long int a,long long int b,long long int c)
+{
+	if(a<=b && a<=c)
+	return a;
+	if(b<=a && b<=c)
+	return b;
+	if(c<=a && c<=b)
+	return c;
+}
+int main()
+{
+	long long int arr[1010][3],n;;
+	while(1)
+	{
+		int i,j;
+		long long int mini=100000,mi,vol,ans=0;
+		inp(n);
+		if(n==0)
+		break;
+		for(i=0;i<n;i++)
+		{
+			inp(arr[i][0]);
+			inp(arr[i][1]);
+			inp(arr[i][2]);
+			mi=minval(arr[i][0],arr[i][1],arr[i][2]);
+			if(mi<mini && mi>0)
+			mini=mi;
 		}
-		
-		for(i = 1; i <= n; i++) {
-			ans = MAX(ans, deg[i]);
-		}
-		
-		while(!stk.empty()) {
-			stk.pop();
-		}
-		
-		printf("%d\n", ans);
+		vol=(mini*mini*mini);
+		//printf("vol=%lld\n",vol);
+		for(i=0;i<n;i++)
+		ans+=((arr[i][0]*arr[i][1]*arr[i][2])/vol);
+		printf("%lld\n",ans);
 	}
-	
 	return 0;
 }
