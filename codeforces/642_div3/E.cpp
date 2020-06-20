@@ -35,51 +35,51 @@ typedef long long LL;
 #define setbit(s, b) (s |= (1<<b))
 #define clrbit(s, b) (s &= ~(1<<b))
 
-int cntlt[1000001], cntrt[1000001],dp[1000001], n, k, lastone = -1;
+int dp[1000001][2][2], n, k;
 char s[1000001];
 
-int solve(int currpos) {
+int solve(int pos, int last_val, int has_one_come) {
 
-	if(dp[currpos] != -1) {
-		return dp[currpos];
+	if(pos >= n) {
+		return 0;
 	}
 
-	//k = 3
-
-	// 0 0 1 0 0 
-
-	//1 0 0 0 0 0 
-
-	// k
-	// 1 0 
+	if(dp[pos][last_val][has_one_come] != -1) {
+		return dp[pos][last_val][has_one_come];
+	}
 
 	int ans;
-	//printf("currpos %d nextpos %d cntnext %d cntcur %d\n", currpos, nextpos, cnt[nextpos], cnt[currpos]);
+	if(s[pos] == '1') {
 
-	if(s[currpos] == '1') {
-
-		if(currpos + k >= n ){
-			ans = cntrt[currpos];
-			//printf("YES curr %d %d\n", currpos, ans);
+		if(last_val == 1) {
+			ans = solve(pos + k, 1, 1);
 		} else {
 
-			ans  = ((cntlt[currpos + k] - cntlt[currpos] - 1) + solve(currpos + k));
+			if(has_one_come == 1) {
+				ans = 1 + solve(pos + k, 0, 1);
+			} else {
+				ans = min(1+solve(pos+k, 0, 0), solve(pos+k, 1, 1));
+			}
 		}
 
 	} else {
 
-		int toadd = cntrt[currpos] == 0 ? 0 : 1;
-
-		if(currpos + k >=n ) {
-			ans = cntrt[currpos] + toadd;
+		if(last_val == 1) {
+			ans = min(1 + solve(pos + k, 1, 1), solve(pos+k, 0, 1));
 		} else {
 
-			ans = ((cntlt[currpos + k] - cntlt[currpos]) + toadd + solve(currpos + k));
+			if(has_one_come == 1) {
+				ans = solve(pos+k, 0, 1);
+			} else {
+
+				ans = min(solve(pos+k, 0, 0), 1+solve(pos+k, 1, 1));
+			}
 		}
 	}
 
-	dp[currpos] = ans;
-	return dp[currpos];
+	dp[pos][last_val][has_one_come] = ans;
+	return dp[pos][last_val][has_one_come];
+
 }
 
 int main() {
@@ -87,63 +87,36 @@ int main() {
 	int t;
 	cin>>t;
 	while(t--) {
-		int i;
+		int i, totalone = 0, ans = INF;
 		
 		cin>>n>>k;
 		scanf("%s", s);
 
+		for(i = 0 ; i < n; i++ ) {
+			dp[i][0][0] = -1;
+			dp[i][0][1] = -1;
+			dp[i][1][0] = -1;
+			dp[i][1][1] = -1;
+		}
+
+
 		for(i = 0 ; i < n ; i++) {
-			dp[i] = -1;
-			cntlt[i] = 0;
-			cntrt[i] = 0;
+			if(s[i] == '1') totalone++;
 		}
 
-		lastone = -1;
+		for(i = 0 ; i < k; i++) {
 
-		cntlt[0] = 0;
-
-		for(i = 0 ;i < n-1; i++) {
-			if(s[i] == '0') {
-				cntlt[i+1] = cntlt[i];
-			} else {
-				cntlt[i+1] = cntlt[i] + 1;
-			}
-		}
-
-		for(i = n-1;i>=0; i--) {
-			if(s[i+1] == '1') {
-				cntrt[i] = cntrt[i+1] + 1;
-
-				if(lastone == -1) {
-					lastone = i+1;
+			int set_one = 0;
+			for(int j = i; j<n; j+=k) {
+				if(s[j] == '1') {
+					set_one++;
 				}
-
-			} else {
-				cntrt[i] = cntrt[i+1];
 			}
+
+			ans = min(ans, solve(i, 0, 0) + (totalone - set_one)); 
 		}
 
-		cntrt[n-1] = 0;
-		
-		//<<dp[0] << " blah " << cntlt[0] <<endl;
-
-
-		for(i = 0 ; i < n; i++) {
-			solve(i);
-		}
-
-		// cout<<endl;
-		// for(i = 0 ;i < n ; i++) {
-		// 	printf("%d ", dp[i]);
-		// }
-		//cout<<dp[0] << " blah " << cntlt[0] <<endl;
-		int mini = dp[0] + cntlt[0];
-
-		for(i = 1; i < n; i++) {
-			mini = min(mini, dp[i] + cntlt[i]);
- 		}
-
- 		cout<<mini<<endl;
+		cout<<ans<<endl;
  	}
 
 	return 0;
