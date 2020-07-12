@@ -40,23 +40,34 @@ typedef long long LL;
 #define MOD 1000000007
 #define MAX 1000000
 
+/* Sieve of Eratosthenes */
+bitset<MAX> prime;
+void compute_prime() {
+	prime.flip(); //makes all true
+	prime[0] = prime[1] = false;
+	
+	for(int i=2;i*i<MAX;i++) {
+		if(prime[i])
+			for(int j=i*i;j<MAX;j+=i) prime[j] = false;
+	}
+}
 
 vector<pair<int, int> > factorise(int number) {
 	int num = number;
 	vector<pair<int, int> > v;
 	for(int j=2;j*j<=number;j++) {
 		int cnt = 0;
+		
 		while(num%j==0) {
 			cnt++;
 			num/=j;
 		}
-		v.PB(MP(j, cnt));
+		if(cnt > 0) v.PB(MP(j, cnt));
 	}
 	if(num > 1) v.PB(MP(num, 1));
 	return v;
 }
- 
- 
+
 /* Factorial modulo MOD */
 LL fact[MAX];
 void factorial() {
@@ -88,4 +99,51 @@ int gcd(int a, int b) {
 	if(a < b) return gcd(b,a); 
 	if(b == 0) 	return a;
 	return gcd(b, a %b);
+}
+
+/* generate all subsets 
+	n is the size of set whose all subsets needs to be generated
+*/
+
+void subset(vector<int> vec, int n) {
+	for(int i = 0; i < (1<< n); i++) {
+		for(int j = 0; j < n; j++) {
+
+			if(i & (1 << j))  {
+				// add in subset
+				cout<<vec[j];
+			}
+		}
+
+		//got 1 subset
+		cout<<endl;
+	}
+}
+
+
+
+/* Union Find / DSU */
+//have a parent array global
+int parent[MAX];
+int find(int u) {
+	if(u == parent[u])return u;
+	return parent[u] = find(parent[u]);
+}
+
+void _union(int u, int v) {
+	parent[find(u)] = find(v);
+}
+
+/* Modulo multiplication */
+LL mulmod(LL a, LL b) {
+	a = (a + MOD) % MOD;
+	b = (b + MOD) % MOD;
+	LL res = 0;
+	a %= MOD;
+	while(b) {
+		if(b&1) res = (res+a)%MOD;
+		a = (a*2)%MOD;
+		b >>= 1;
+	}
+	return res; 
 }
