@@ -64,7 +64,7 @@ int main() {
 		LL sum1 = arr[i], sum2 = arr[i];
 
 		if(i-2 >=0) sum1 += lt[i-2];
-		if(i+1 < n) sum1 += rt[i+2];
+		if(i+1 < n) sum1 += rt[i+1];
 
 		if(i-1 >=0) sum2 += lt[i-1];
 		if(i+2 < n) sum2 += rt[i+2];

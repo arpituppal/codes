@@ -41,7 +41,6 @@ typedef long long LL;
 #define MAX 100005
 
 
-
 int factorise(int number) {
 	int num = number, ans = 1;
 	for(int j=2;j*j<=number;j++) {
