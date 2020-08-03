@@ -37,6 +37,7 @@ int main() {
 		in(n);
 		
 		MSV(dp, -1);
+		
 
 		for(i = 1; i <= n; i++) {
 			in(arr[i]);
